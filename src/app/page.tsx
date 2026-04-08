@@ -234,13 +234,16 @@ export default function SherlockDashboard() {
           </p>
         </div>
 
-        <div className="flex items-center justify-between md:justify-end gap-4 bg-slate-900/80 p-1.5 pr-4 rounded-2xl border border-slate-800 shadow-xl self-start md:self-auto w-full md:w-auto">
+        <div className="flex items-center justify-between md:justify-end gap-3 md:gap-4 bg-slate-900/80 p-1.5 pr-4 rounded-2xl border border-slate-800 shadow-xl self-start md:self-auto w-full md:w-auto">
+          <div className="hidden sm:block text-[9px] font-bold uppercase tracking-widest text-slate-500 pl-3 border-r border-slate-800 pr-3">
+            Full implementation on main branch
+          </div>
           <div className={`px-3 py-1.5 rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-tighter transition-all ${isDemoMode ? 'bg-amber-500 text-black' : 'bg-slate-800 text-slate-500'}`}>
             {isDemoMode ? 'Demo Mode' : 'Live Inference'}
           </div>
           <button 
-            onClick={() => setIsDemoMode(!isDemoMode)}
-            className={`relative w-10 h-5 rounded-full transition-colors ${isDemoMode ? 'bg-amber-500/20' : 'bg-slate-800'}`}
+            disabled
+            className={`cursor-not-allowed relative w-10 h-5 rounded-full transition-colors ${isDemoMode ? 'bg-amber-500/20' : 'bg-slate-800'}`}
           >
             <motion.div 
               animate={{ x: isDemoMode ? 20 : 4 }}
