@@ -1,0 +1,120 @@
+{
+  "queries": [
+    {
+      "id": "q1",
+      "query": "What color was the hat left behind?",
+      "classification": "Local",
+      "standardTrace": {
+        "pipeline": "Standard",
+        "finalAnswer": "The hat left behind was blue.",
+        "metrics": { "latencyMs": 120, "tokensUsed": 150 },
+        "steps": [
+          {
+            "stepId": "s-emb",
+            "name": "Query Embedding",
+            "description": "Converted the query into a dense vector (text-embedding-3-small).",
+            "durationMs": 50
+          },
+          {
+            "stepId": "s-vec",
+            "name": "Vector Resemblance Search",
+            "description": "Computed cosine similarity across all text chunks.",
+            "durationMs": 40
+          },
+          {
+            "stepId": "s-topk",
+            "name": "Retrieved Top-K Chunks",
+            "description": "Found 1 highly relevant chunk.",
+            "durationMs": 10,
+            "dataPayload": {
+              "chunks": [
+                { "id": "chunk-1", "score": 0.94, "text": "Sherlock Holmes sat in his armchair, observing the blue hat that had been left behind. The hat belonged to Mr. Henry Baker." }
+              ]
+            }
+          }
+        ]
+      },
+      "graphTrace": {
+        "pipeline": "Graph",
+        "finalAnswer": "The hat was blue. It belonged to Henry Baker.",
+        "metrics": { "latencyMs": 450, "tokensUsed": 320 },
+        "steps": [
+          {
+            "stepId": "g-ext",
+            "name": "Entity Extraction",
+            "description": "Extracted semantic entities from query.",
+            "durationMs": 200,
+            "dataPayload": { "entities": ["hat"] }
+          },
+          {
+            "stepId": "g-match",
+            "name": "Node Matching & Expansion",
+            "description": "Found 'Blue Hat' node. Traversed 1 hop to find 'Henry Baker' and 'Sherlock Holmes'.",
+            "durationMs": 150,
+            "dataPayload": {
+              "nodes": ["Blue Hat", "Henry Baker", "Sherlock Holmes"],
+              "edges": [
+                {"source": "Blue Hat", "target": "Henry Baker", "relation": "BELONGS_TO"},
+                {"source": "Sherlock Holmes", "target": "Blue Hat", "relation": "OBSERVED"}
+              ]
+            }
+          },
+          {
+            "stepId": "g-comm",
+            "name": "Community Report Retrieval",
+            "description": "Failed to find specific community report for purely local node query. Relying on raw nodes for prompt.",
+            "durationMs": 50,
+            "dataPayload": { "warning": "Over-retrieval possible. Local queries do not benefit fully from GraphRAG summaries." }
+          }
+        ]
+      }
+    },
+    {
+      "id": "q2",
+      "query": "What are the recurring themes across cases?",
+      "classification": "Global",
+      "standardTrace": {
+        "pipeline": "Standard",
+        "finalAnswer": "Themes mentioned include stolen items.",
+        "metrics": { "latencyMs": 100, "tokensUsed": 200 },
+        "steps": [
+          {
+            "stepId": "s-vec",
+            "name": "Vector Search",
+            "description": "Searching for similar embeddings to 'recurring themes across cases'",
+            "durationMs": 60
+          },
+          {
+            "stepId": "s-topk",
+            "name": "Retrieved Scattershot Chunks",
+            "description": "Retrieved chunks mentioning 'cases' or 'themes', but missing holistic context.",
+            "durationMs": 20,
+            "dataPayload": {
+              "chunks": [
+                { "id": "chunk-2", "score": 0.65, "text": "Watson noted that Holmes often relied on seemingly insignificant details, a theme across many of their cases involving stolen items." }
+              ]
+            }
+          }
+        ]
+      },
+      "graphTrace": {
+        "pipeline": "Graph",
+        "finalAnswer": "Across cases, a recurring theme is the significance of seemingly mundane observations. Holmes routinely uses small clues, like a forgotten blue hat, to deduce larger patterns about the crimes and human nature.",
+        "metrics": { "latencyMs": 300, "tokensUsed": 750 },
+        "steps": [
+          {
+            "stepId": "g-comm",
+            "name": "Community Report Retrieval",
+            "description": "Global query detected. Bypassing raw node matching and retrieving top-level community summaries.",
+            "durationMs": 120,
+            "dataPayload": {
+              "reports": [
+                { "title": "The Mystery of the Blue Hat", "summary": "Sherlock Holmes and John Watson are investigating a seemingly mundane blue hat that belongs to Mr. Henry Baker. Watson observes that Holmes uses these small clues to deduce larger themes of stolen items." }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

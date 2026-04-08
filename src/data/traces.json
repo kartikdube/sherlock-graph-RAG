@@ -1,0 +1,129 @@
+{
+  "queries": [
+    {
+      "id": "q-1",
+      "query": "Who is Irene Adler and what is her significance?",
+      "type": "Local",
+      "status": "ready",
+      "standard": {
+        "metrics": { "latency": "142ms", "tokens": 284 },
+        "answer": "Irene Adler is a prominent opera singer and the only person to have ever outwitted Sherlock Holmes. She is referred to by him as 'The Woman', representing a rare instance of a character who escaped his deduction.",
+        "steps": [
+          { "id": "s1", "label": "Semantic Search", "desc": "Query embedded and matched against 1,200 chunks.", "data": { "top_k": 3, "top_score": 0.89 } },
+          { "id": "s2", "label": "Context Assembly", "desc": "Retrieved 3 chunks from 'A Scandal in Bohemia'.", "data": { "chunks": ["...to Sherlock Holmes she is always THE woman...", "...Irene Adler, of adventurous memory..."] } }
+        ]
+      },
+      "graph": {
+        "metrics": { "latency": "356ms", "tokens": 1240 },
+        "answer": "Irene Adler is an American opera singer and actress. In the Knowledge Graph, she is linked to the King of Bohemia as a former lover and to Sherlock Holmes as an adversary who earned his respect. She signifies the limits of Holmes's social deductions regarding women.",
+        "steps": [
+          { "id": "g1", "label": "Entity Extraction", "desc": "Identified 'Irene Adler' as key node.", "data": { "entities": ["Irene Adler"] } },
+          { "id": "g2", "label": "Graph Traversal", "desc": "Expanding 1-hop from 'Irene Adler' node.", "data": { "linked_nodes": ["King of Bohemia", "Godfrey Norton", "Sherlock Holmes"], "relations": ["FORMER_LOVER_OF", "WIFE_OF", "ADVERSARY_OF"] } },
+          { "id": "g3", "label": "Community Synthesis", "desc": "Retrieved 'Bohemian Scandal' community report.", "data": { "community_id": "comm_adler_7", "summary": "Focuses on the conflict between royalty and individual autonomy..." } }
+        ]
+      }
+    },
+    {
+      "id": "q-2",
+      "query": "What are the common patterns in how Holmes solves cases?",
+      "type": "Global",
+      "status": "ready",
+      "standard": {
+        "metrics": { "latency": "110ms", "tokens": 150 },
+        "answer": "Holmes solves cases by observing small details and using logical deduction. He often relies on his knowledge of chemistry and local geography.",
+        "steps": [
+          { "id": "s1", "label": "Semantic Search", "desc": "Searching for broad patterns across chunks.", "data": { "top_k": 3, "top_score": 0.62 } },
+          { "id": "s2", "label": "Context Assembly", "desc": "Retrieved scattered chunks mentioning 'deduction' and 'logic'.", "data": { "chunks": ["'It is a capital mistake to theorize before one has data.'", "'You see, but you do not observe.'"] } }
+        ]
+      },
+      "graph": {
+        "metrics": { "latency": "290ms", "tokens": 980 },
+        "answer": "Holmes's investigative pattern consistently involves: 1) Initial observation of mundane physical details (boots, hats), 2) Cross-referencing with his vast personal database of criminal history, and 3) Deliberate provocation of the suspect to confirm a theory. Graph analysis shows these steps frequent nodes across multiple disparate stories.",
+        "steps": [
+          { "id": "g1", "label": "Community Summarization", "desc": "Global query detected. Bypassing node match for high-level summaries.", "data": { "selected_communities": ["Investigation Methodology", "Thematic Criminal Traits"] } },
+          { "id": "g2", "label": "Synthesis", "desc": "Combining reports from 3 story clusters.", "data": { "reports": ["Methodology Report: Highlights focus on physical markers...", "Criminal Patterns: Notes the 'Provocation' technique..."] } }
+        ]
+      }
+    },
+    {
+      "id": "q-3",
+      "query": "Who was the client in the scandal of Bohemia?",
+      "type": "Local",
+      "status": "ready",
+      "standard": {
+        "metrics": { "latency": "95ms", "tokens": 120 },
+        "answer": "The client was the King of Bohemia, who sought Holmes's help to retrieve a compromising photograph from Irene Adler.",
+        "steps": [
+          { "id": "s1", "label": "Vector Match", "desc": "High confidence match for 'King of Bohemia' in story start.", "data": { "score": 0.98 } }
+        ]
+      },
+      "graph": {
+        "metrics": { "latency": "210ms", "tokens": 450 },
+        "answer": "The King of Bohemia, Wilhelm Gottsreich Sigismond von Ormstein, is the primary client. He is linked via edges to both Sherlock Holmes (Client) and Irene Adler (Former Associate).",
+        "steps": [
+          { "id": "g1", "label": "Node Lookup", "desc": "Matched 'King of Bohemia'.", "data": { "node": "Wilhelm Gottsreich" } }
+        ]
+      }
+    },
+    {
+      "id": "q-4",
+      "query": "How did the pawn shop clue lead to the bank vault?",
+      "type": "Multi-hop",
+      "status": "ready",
+      "standard": {
+        "metrics": { "latency": "180ms", "tokens": 400 },
+        "answer": "Holmes noticed the assistant's knees were worn, suggesting digging. He then realized the pawn shop was adjacent to the City and Suburban Bank.",
+        "steps": [
+          { "id": "s1", "label": "Chunk Retrieval", "desc": "Pulls chunks about Jabez Wilson's assistant and the bank layout.", "data": { "chunks_found": 2 } }
+        ]
+      },
+      "graph": {
+        "metrics": { "latency": "380ms", "tokens": 890 },
+        "answer": "The connection is bridged via the 'Vincent Spaulding' node. The graph links Spaulding (Assistant) -> Jabez Wilson (Pawn Shop) -> Tunneling -> Bank Vault. GraphRAG traverses these relationships to reveal the hidden physical connection.",
+        "steps": [
+          { "id": "g1", "label": "Edge Traversal", "desc": "Bridging Pawn Shop and Bank via Tunneling relationship.", "data": { "path": ["Pawn Shop", "Vincent Spaulding", "Bank Vault"] } }
+        ]
+      }
+    },
+    {
+      "id": "q-5",
+      "query": "What themes of class and nobility are present?",
+      "type": "Global",
+      "status": "ready",
+      "standard": {
+        "metrics": { "latency": "150ms", "tokens": 300 },
+        "answer": "The stories touch on the contrast between the wealthy clients and the grit of London's lower classes.",
+        "steps": [
+          { "id": "s1", "label": "Broad Search", "desc": "Searching for 'class' and 'nobility'.", "data": { "relevance": 0.45 } }
+        ]
+      },
+      "graph": {
+        "metrics": { "latency": "420ms", "tokens": 1500 },
+        "answer": "A core community theme is 'Social Vulnerability of the Elite'. The graph shows high-born clients (King of Bohemia, Lord St. Simon) being outplayed by commoners (Irene Adler, Flora Millar), highlighting a shift in power towards merit and wit over hereditary rank.",
+        "steps": [
+          { "id": "g1", "label": "Community Report", "desc": "Pulls 'Social Hierarchy' summary report.", "data": { "summary_id": "soc_hier_1" } }
+        ]
+      }
+    },
+    {
+      "id": "q-6",
+      "query": "What was the name of the pawnbroker's assistant?",
+      "type": "Local",
+      "status": "ready",
+      "standard": {
+        "metrics": { "latency": "80ms", "tokens": 100 },
+        "answer": "The assistant's name was Vincent Spaulding, who was actually the criminal John Clay in disguise.",
+        "steps": [
+          { "id": "s1", "label": "Exact Match", "desc": "Retrieving chunk from 'The Red-Headed League'.", "data": { "text": "Vincent Spaulding was his name..." } }
+        ]
+      },
+      "graph": {
+        "metrics": { "latency": "190ms", "tokens": 350 },
+        "answer": "Vincent Spaulding. In the graph, he is an alias for the 'John Clay' node, linked to the Bank Robbery plot.",
+        "steps": [
+          { "id": "g1", "label": "Alias Resolution", "desc": "Spaulding resolved to John Clay.", "data": { "alias": true } }
+        ]
+      }
+    }
+  ]
+}
